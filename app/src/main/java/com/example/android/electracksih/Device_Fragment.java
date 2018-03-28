@@ -20,7 +20,9 @@ public class Device_Fragment extends android.support.v4.app.Fragment {
     RecyclerView.Adapter mAdapter2;
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.LayoutManager mLayoutManager2;
-    @Nullable
+
+
+    public  Device_Fragment(){};
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
@@ -39,6 +41,6 @@ public class Device_Fragment extends android.support.v4.app.Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return view;
     }
 }

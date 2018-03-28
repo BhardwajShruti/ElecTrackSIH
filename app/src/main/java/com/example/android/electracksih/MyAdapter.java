@@ -1,5 +1,8 @@
 package com.example.android.electracksih;
 
+import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,9 @@ import java.net.URL;
 
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+    private final Context context;
+
+    private int[] mDevice_ID = {1,2,3,4};
     private String[] mDatasetDevice = {"Light1","Light2","Fan","Exhaust"};
     private String[] mDatasetRoom = {"Room1","room2","room3","room4"};
     private String[] mDatasetImage = {
@@ -27,6 +33,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdi9EW3rKicgUUMN_1DKh2kigREepltjLkfDAoEp4wDnKp02LBzQ",
             "https://upload.wikimedia.org/wikipedia/commons/d/dd/Simple_light_bulb_graphic_white.png"
     };
+
+    public MyAdapter(Context context) {
+
+        this.context = context;
+
+    }
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -41,7 +53,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
-
     // Provide a suitable constructor (depends on the kind of dataset)
 //    public MyAdapter(String[] myDataset) {
 //        mDataset = myDataset;
@@ -49,10 +60,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-URL url;
+        URL url;
 
         holder.txtHeader.setText(mDatasetDevice[position]);
         holder.roomHeader.setText(mDatasetRoom[position]);
@@ -70,6 +81,45 @@ URL url;
         }
 
 
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context,Device_Detail.class);
+                int position = holder.getAdapterPosition();
+                i.putExtra("id",mDevice_ID[position]);
+
+
+
+                context.startActivity(i);
+
+            }
+        });
+        holder.txtHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context,Device_Detail.class);
+                int position = holder.getAdapterPosition();
+                i.putExtra("id",mDevice_ID[position]);
+
+
+
+                context.startActivity(i);
+
+            }
+        });
+        holder.roomHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context,Device_Detail.class);
+                int position = holder.getAdapterPosition();
+                i.putExtra("id",mDevice_ID[position]);
+
+
+
+                context.startActivity(i);
+
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -86,8 +136,9 @@ URL url;
         public TextView txtHeader;
         public TextView roomHeader;
         public ImageView imageView;
-        public ImageView iv;
+        public CardView cardView;
         public View layout;
+        Context context;
 
         public ViewHolder(View v) {
             super(v);
@@ -95,7 +146,7 @@ URL url;
             txtHeader = (TextView) v.findViewById(R.id.device_name);
             roomHeader = (TextView) v.findViewById(R.id.room_name);
             imageView = (ImageView) v.findViewById(R.id.device_image);
-
+            cardView = (CardView) v.findViewById(R.id.card_view);
         }
     }
 }

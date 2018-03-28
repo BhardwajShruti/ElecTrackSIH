@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.electracksih">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -27,8 +30,7 @@
             android:name=".Device_Fragment"
             android:label="@string/title_activity_device__fragment"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".prediction_device_fragment"></activity>
     </application>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
-    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
