@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 public class Device_Detail extends AppCompatActivity {
   Device_Fragment dvFrame = null;
+  prediction_device_fragment pdfFrame = null;
+  history_device hdevFrame =null;
     private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -23,16 +25,15 @@ public class Device_Detail extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                 { Log.i("abb","bba");
-                    dvFrame= new Device_Fragment();
+                    hdevFrame= new history_device();
                     FragmentManager fm= getSupportFragmentManager();
                     FragmentTransaction ft = fm.beginTransaction();
 //ft.detach(tvframe);
 
-                    ft.replace(R.id.container, dvFrame);
+                    ft.replace(R.id.container, hdevFrame);
                     ft.commit();
                     Log.i("a","b");
-
-                }
+                    return true;}
                 case R.id.navigation_dashboard:{ Log.i("abb","bba");
                     dvFrame= new Device_Fragment();
                     FragmentManager fm= getSupportFragmentManager();
@@ -41,18 +42,21 @@ public class Device_Detail extends AppCompatActivity {
 
                     ft.replace(R.id.container, dvFrame);
                     ft.commit();
-                    Log.i("a","b");}
+                    Log.i("a","b");
+                    return true;
+
+                }
 
                 case R.id.navigation_notifications:{ Log.i("abb","bba");
-                    dvFrame= new Device_Fragment();
+                    pdfFrame= new prediction_device_fragment();
                     FragmentManager fm= getSupportFragmentManager();
                     FragmentTransaction ft = fm.beginTransaction();
 //ft.detach(tvframe);
 
-                    ft.replace(R.id.container, dvFrame);
+                    ft.replace(R.id.container, pdfFrame);
                     ft.commit();
                     Log.i("a","b");}
-
+return true;
             }
             return false;
         }

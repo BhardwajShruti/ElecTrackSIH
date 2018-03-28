@@ -10,18 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class prediction_device_fragment extends Fragment {
+public class history_device extends Fragment {
     RecyclerView mRecyclerView;
     RecyclerView mRecyclerView2;
     RecyclerView.Adapter mAdapter;
     RecyclerView.Adapter mAdapter2;
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.LayoutManager mLayoutManager2;
-    public  prediction_device_fragment(){};
+    public  history_device(){};
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.activity_prediction_device_fragment, container, false);
+        View view = inflater.inflate(R.layout.activity_history_device, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.device_recycler_view_frag);
         // in content do not change the layout size of the RecyclerView
@@ -39,3 +39,4 @@ public class prediction_device_fragment extends Fragment {
         return view;
     }
 }
+
