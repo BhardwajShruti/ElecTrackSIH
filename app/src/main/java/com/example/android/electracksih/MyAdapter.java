@@ -23,16 +23,20 @@ import java.net.URL;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private final Context context;
 
-    private int[] mDevice_ID = {1,2,3,4};
-    private String[] mDatasetDevice = {"Light1","Light2","Fan","Exhaust"};
-    private String[] mDatasetRoom = {"Room1","room2","room3","room4"};
+    private int[] mDevice_ID = {1,2,3,4,5,6};
+    private String[] mDatasetDevice = {"Light1","Light2","Fan","Exhaust","Television","Air Conditioner"};
+    private String[] mDatasetRoom = {"Room1","Room2","Room3","Room4","Room6","Room7"};
     private String[] mDatasetImage = {
             "https://upload.wikimedia.org/wikipedia/commons/d/dd/Simple_light_bulb_graphic_white.png",
             "https://upload.wikimedia.org/wikipedia/commons/d/dd/Simple_light_bulb_graphic_white.png",
+"http://aniket965.ml/canYouSpamMe/fan%20(1).png",
+            "http://aniket965.ml/canYouSpamMe/fan%20(1).png",
 
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdi9EW3rKicgUUMN_1DKh2kigREepltjLkfDAoEp4wDnKp02LBzQ",
-            "https://upload.wikimedia.org/wikipedia/commons/d/dd/Simple_light_bulb_graphic_white.png"
+            "http://aniket965.ml/canYouSpamMe/television.png",
+"http://aniket965.ml/canYouSpamMe/air-conditioner.png"
+
     };
+    private String[] mSwitchImage = {};
 
     public MyAdapter(Context context) {
 
@@ -120,6 +124,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
             }
         });
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
