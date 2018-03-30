@@ -1,5 +1,6 @@
 package com.example.android.electracksih;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -15,6 +16,7 @@ public class Device_Detail extends AppCompatActivity {
   Device_Fragment dvFrame = null;
   prediction_device_fragment pdfFrame = null;
   history_device hdevFrame =null;
+  int device_id;
     private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -22,11 +24,14 @@ public class Device_Detail extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Bundle bundle=new Bundle();
+            bundle.putInt("id",device_id);
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                 { Log.i("abb","bba");
                     hdevFrame= new history_device();
                     FragmentManager fm= getSupportFragmentManager();
+                    hdevFrame.setArguments(bundle);
                     FragmentTransaction ft = fm.beginTransaction();
 //ft.detach(tvframe);
 
@@ -36,6 +41,7 @@ public class Device_Detail extends AppCompatActivity {
                     return true;}
                 case R.id.navigation_dashboard:{ Log.i("abb","bba");
                     dvFrame= new Device_Fragment();
+                    dvFrame.setArguments(bundle);
                     FragmentManager fm= getSupportFragmentManager();
                     FragmentTransaction ft = fm.beginTransaction();
 //ft.detach(tvframe);
@@ -52,6 +58,7 @@ public class Device_Detail extends AppCompatActivity {
                     FragmentManager fm= getSupportFragmentManager();
                     FragmentTransaction ft = fm.beginTransaction();
 //ft.detach(tvframe);
+                    pdfFrame.setArguments(bundle);
 
                     ft.replace(R.id.container, pdfFrame);
                     ft.commit();
@@ -67,6 +74,8 @@ return true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device__detail);
 
+        Intent intent=getIntent();
+        device_id=intent.getIntExtra("id",0);
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

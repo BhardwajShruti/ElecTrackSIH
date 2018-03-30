@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -66,17 +67,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         URL url;
 
         holder.txtHeader.setText(mDatasetDevice[position]);
         holder.roomHeader.setText(mDatasetRoom[position]);
-   //     holder.dotImage.setImageResource(R.drawable.ic_fiber_manual_record_black_24dp);
-      //  holder.dotImage.setTag(holder.dotImage.getResources().getDrawable());
+        //     holder.dotImage.setImageResource(R.drawable.ic_fiber_manual_record_black_24dp);
+        //  holder.dotImage.setTag(holder.dotImage.getResources().getDrawable());
         try {
-            url =new URL(mDatasetImage[position]);
+            url = new URL(mDatasetImage[position]);
             Picasso.get()
                     .load(mDatasetImage[position])
                     .placeholder(R.drawable.ic_launcher_background) // optional
@@ -92,10 +93,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context,Device_Detail.class);
+                Intent i = new Intent(context, Device_Detail.class);
                 int position = holder.getAdapterPosition();
-                i.putExtra("id",mDevice_ID[position]);
-
+                i.putExtra("id", mDevice_ID[position]);
 
 
                 context.startActivity(i);
@@ -105,10 +105,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.txtHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context,Device_Detail.class);
+                Intent i = new Intent(context, Device_Detail.class);
                 int position = holder.getAdapterPosition();
-                i.putExtra("id",mDevice_ID[position]);
-
+                i.putExtra("id", mDevice_ID[position]);
 
 
                 context.startActivity(i);
@@ -118,33 +117,81 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.roomHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context,Device_Detail.class);
+                Intent i = new Intent(context, Device_Detail.class);
                 int position = holder.getAdapterPosition();
-                i.putExtra("id",mDevice_ID[position]);
-
+                i.putExtra("id", mDevice_ID[position]);
 
 
                 context.startActivity(i);
 
             }
         });
-        holder.dotImage.setOnClickListener(new  View.OnClickListener() {
+        holder.dotImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-int drawableId = (Integer) holder.dotImage.getTag();
-if(drawableId==R.drawable.ic_fiber_manual_record_pink){
-    holder.dotImage.setImageResource(R.drawable.ic_fiber_manual_record_black_24dp);
-    Log.i("image","black");
-}
-              //  int drawableId2 = (Integer) holder.dotImage.getTag();
-if(drawableId==R.drawable.ic_fiber_manual_record_black_24dp){  holder.dotImage.setImageResource(R.drawable.ic_fiber_manual_record_pink);
-    Log.i("image","pink");
-}
+                String mid;
+                int stat;
+                int drawableId = (Integer) holder.dotImage.getTag();
+                if (drawableId == R.drawable.ic_fiber_manual_record_pink) {
+                    holder.dotImage.setImageResource(R.drawable.ic_fiber_manual_record_black_24dp);
+                    holder.dotImage.setTag(R.drawable.ic_fiber_manual_record_black_24dp);
 
+                    Log.i("image", "black");
+                    mid = "lightturnedoff";
+                    stat = 0;
+                } else {
+                    holder.dotImage.setImageResource(R.drawable.ic_fiber_manual_record_pink);
+                    holder.dotImage.setTag(R.drawable.ic_fiber_manual_record_pink);
+
+                    Log.i("image", "pink");
+
+                    mid = "lightturnedon";
+                    stat = 1;
+                }
+
+//                    String mid;
+//                    int stat;
+//                    boolean switch_checked =  onOff.isChecked();
+//                    if(switch_checked){
+//                        mid =  "lightturnedon";
+//                        stat = 1;
+//                    }
+//                    else{
+//                        mid = "lightturnedoff";
+//                        stat = 0;
+//                    }
+
+
+//                String urlString="http://192.168.43.189:5000/lightturnedon?arg1=&arg2=&ar3=";
+                String urlString = "http://172.28.25.147:5000";
+                switch (mDevice_ID[position]) {
+                    case 1: {
+                        urlString = urlString + "/" + mid + "?arg1=1&arg2=114&arg3=" + stat;
+                    }
+                    case 2: {
+                        urlString = urlString + "/" + mid + "?arg1=1&arg2=113&arg3=" + stat;
+
+                    }
+                    case 3: {
+                        urlString = urlString + "/" + mid + "?arg1=1&arg2=112&arg3=" + stat;
+
+                    }
+                    case 4: {
+                        urlString = urlString + "/" + mid + "?arg1=1&arg2=115&arg3=" + stat;
+
+                    }
+
+                }
+                myTask myTask = new myTask(context, urlString, new myTask.onSpecificStateChangeListener() {
+                    @Override
+                    public void onStateChanged(String string) {
+                        Toast.makeText(context, string, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                myTask.execute(urlString);
 
             }
         });
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)
