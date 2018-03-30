@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 inflater.inflate(R.layout.activity_device_card, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
+
         return vh;
     }
     // Provide a suitable constructor (depends on the kind of dataset)
@@ -71,6 +73,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         holder.txtHeader.setText(mDatasetDevice[position]);
         holder.roomHeader.setText(mDatasetRoom[position]);
+   //     holder.dotImage.setImageResource(R.drawable.ic_fiber_manual_record_black_24dp);
+      //  holder.dotImage.setTag(holder.dotImage.getResources().getDrawable());
         try {
             url =new URL(mDatasetImage[position]);
             Picasso.get()
@@ -124,6 +128,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
             }
         });
+        holder.dotImage.setOnClickListener(new  View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+int drawableId = (Integer) holder.dotImage.getTag();
+if(drawableId==R.drawable.ic_fiber_manual_record_pink){
+    holder.dotImage.setImageResource(R.drawable.ic_fiber_manual_record_black_24dp);
+    Log.i("image","black");
+}
+              //  int drawableId2 = (Integer) holder.dotImage.getTag();
+if(drawableId==R.drawable.ic_fiber_manual_record_black_24dp){  holder.dotImage.setImageResource(R.drawable.ic_fiber_manual_record_pink);
+    Log.i("image","pink");
+}
+
+
+            }
+        });
 
     }
 
@@ -142,6 +162,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public TextView roomHeader;
         public ImageView imageView;
         public CardView cardView;
+        public ImageView dotImage;
         public View layout;
         Context context;
 
@@ -152,6 +173,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             roomHeader = (TextView) v.findViewById(R.id.room_name);
             imageView = (ImageView) v.findViewById(R.id.device_image);
             cardView = (CardView) v.findViewById(R.id.card_view);
+            dotImage = (ImageView) v.findViewById(R.id.dotview);
+           dotImage.setImageResource(R.drawable.ic_fiber_manual_record_black_24dp);
+           dotImage.setTag(R.drawable.ic_fiber_manual_record_black_24dp);
         }
     }
 }

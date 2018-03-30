@@ -26,8 +26,8 @@ tools:context="com.example.android.electracksih.prediction_device_fragment">
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="287dp"
-            android:src="@drawable/graph_image" />
+            android:layout_height="344dp"
+            android:src="@drawable/predict_graph" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/device_recycler_view_frag"

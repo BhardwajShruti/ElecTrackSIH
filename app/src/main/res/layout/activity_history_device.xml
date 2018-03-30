@@ -26,8 +26,8 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="379dp"
-                android:src="@drawable/graph_image" />
+                android:layout_height="209dp"
+                android:src="@drawable/hist_graph" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/device_recycler_view_frag"
