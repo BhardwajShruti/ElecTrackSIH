@@ -31,7 +31,7 @@
             android:label="@string/title_activity_device__fragment"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".prediction_device_fragment" />
-        <activity android:name=".history_device"></activity>
+        <activity android:name=".history_device" />
     </application>
 
 </manifest>
