@@ -8,9 +8,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
@@ -21,11 +30,17 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView.LayoutManager mLayoutManager2;
     ChatBotFragment chatBotFragment;
 
+    Firebase mRef;
+    ArrayList<SensorData> sensorDataList=new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Firebase.setAndroidContext(this);
+
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 //        ImageView iv = (ImageView) findViewById(R.id.dotview);
@@ -64,7 +79,38 @@ public class MainActivity extends AppCompatActivity {
 //                BottomSheetDialogFragment bottomSheetDialogFragment = new BottomSheetDialogFragment();
                 chatBotFragment = new ChatBotFragment();
                 chatBotFragment.show(getSupportFragmentManager(), chatBotFragment.getTag());
+                loadDataFromFirebase();
 
+            }
+        });
+    }
+
+    private void loadDataFromFirebase() {
+        mRef = new Firebase("https://not-so-awesome-project-45a2e.firebaseio.com/sensors/");
+        mRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot oneDataSnapshot:dataSnapshot.getChildren()){
+                    DataSnapshot oneDataSnapshot_data=oneDataSnapshot.child("data");
+                    String value=oneDataSnapshot_data.getValue(String.class);
+                    String values1[]=value.split(",");
+                    int sizeOfValues=values1.length;
+                    String value2=values1[sizeOfValues-1];
+                    String values2[]=value2.split("\"");
+
+                    DataSnapshot oneDataSnapshot_time=oneDataSnapshot.child("time");
+                    Long timeOfReading=oneDataSnapshot_time.getValue(Long.class);
+                    Log.d("haha",sizeOfValues+"");
+                    SensorData sensorData=new SensorData(values1[0],values1[1],values1[2],values1[3],values1[4],values2[0],"1",timeOfReading);
+                    Log.d("data",oneDataSnapshot.toString());
+                    Toast.makeText(MainActivity.this, "done", Toast.LENGTH_SHORT).show();
+                    sensorDataList.add(sensorData);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
     }

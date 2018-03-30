@@ -13,39 +13,51 @@ import java.util.ArrayList;
  */
 
 public class ChatBotListAdapter extends RecyclerView.Adapter<ChatBotListAdapter.ViewHolder> {
+ArrayList<String> myList=new ArrayList<>();
 
+    public ChatBotListAdapter(ArrayList<String> myList) {
+        this.myList = myList;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View incomingMessageView = inflater.inflate(R.layout.chat_bot_incoming, parent, false);
         View outgoingMesssageView = inflater.inflate(R.layout.chat_bot_outgoing, parent, false);
-        return new ChatBotListAdapter.ViewHolder(incomingMessageView,outgoingMesssageView);
+        if(viewType==1){
+            return new ChatBotListAdapter.ViewHolder(outgoingMesssageView);
+        }
+        else{
+            return new ChatBotListAdapter.ViewHolder(incomingMessageView);
+        }
+
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(position%2==0){
+            return 0;
+        }
+        else {
+            return 1;
+        }
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        String text=myList.get(position);
+        holder.message.setText(text);
     }
 
     @Override
     public int getItemCount() {
-        return ChatBotFragment.messagesList.size();
+        return myList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView message;
-        public ViewHolder(View incomingView,View outgoingView) {
-            super(incomingView);
-            int currentPosition=getAdapterPosition();
-            View CurrentView;
-            if(currentPosition%2==0){
-                CurrentView=outgoingView;
-            }
-            else{
-                CurrentView=incomingView;
-            }
-
+        public ViewHolder(View view) {
+            super(view);
             message=itemView.findViewById(R.id.BotTextView);
         }
     }
