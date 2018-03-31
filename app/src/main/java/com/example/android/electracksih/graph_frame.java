@@ -32,7 +32,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class graph_frame extends android.support.v4.app.Fragment {
-Double valueUpdatedY;
+Double valueUpdatedY=0.00;
     public void updateValueOfY(Double updatedY){
         valueUpdatedY=updatedY;
     }
@@ -67,7 +67,7 @@ Double valueUpdatedY;
 
             // Create a numeric Y axis
             final IAxis yAxis = sciChartBuilder.newNumericAxis()
-                    .withAxisTitle("Power").withVisibleRange(-0.05,0.10).build();
+                    .withAxisTitle("Power").withVisibleRange(0,3).build();
 
             // Create a TextAnnotation and specify the inscription and position for it
             TextAnnotation textAnnotation = sciChartBuilder.newTextAnnotation()

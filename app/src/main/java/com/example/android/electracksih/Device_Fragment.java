@@ -144,6 +144,9 @@ int a;
                     String value=oneDataSnapshot_data.getValue(String.class);
                     String values1[]=value.split(",");
                     int sizeOfValues=values1.length;
+                    if(sizeOfValues<6){
+                        continue;
+                    }
                     String value2=values1[sizeOfValues-1];
                     String values2[]=value2.split("\"");
 
@@ -156,7 +159,7 @@ int a;
                     sensorDataList.add(sensorData);
                 }
                 int size=sensorDataList.size();
-                gframe.updateValueOfY(Double.parseDouble(sensorDataList.get(size-1).Curr1));
+                gframe.updateValueOfY(Double.parseDouble(sensorDataList.get(size-2).Curr1));
             }
 
             @Override
