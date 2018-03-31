@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,13 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import java.util.ArrayList;
 
 /**
  * Created by shruti on 27-03-2018.
@@ -29,6 +37,9 @@ public class Device_Fragment extends android.support.v4.app.Fragment {
     RecyclerView.LayoutManager mLayoutManager2;
     Switch onOff;
     graph_frame gframe;
+
+    Firebase mRef;
+    public static ArrayList<SensorData> sensorDataList=new ArrayList<>();
 int a;
     public Device_Fragment() {
     };
@@ -46,12 +57,17 @@ int a;
 //        ft.commit();
 
 
+
         onOff = (Switch) view.findViewById(R.id.onOff);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.device_recycler_view_frag);
         // in content do not change the layout size of the RecyclerView
         //  mRecyclerView.setHasFixedSize(true);
         Bundle bundle = getArguments();
         a = bundle.getInt("id", 0);
+
+        Firebase.setAndroidContext(getContext());
+
+        loadDataFromFirebase();
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -107,14 +123,47 @@ int a;
             }
         });
 
-        gframe= new graph_frame();
+        gframe = new graph_frame();
         // gframe.setArguments(bundle);
-        FragmentManager fm= getActivity().getSupportFragmentManager();
+        FragmentManager fm = getActivity().getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.graph_container, gframe);
         ft.commit();
         return view;
+    }
 
+    private void loadDataFromFirebase() {
+        mRef = new Firebase("https://not-so-awesome-project-45a2e.firebaseio.com/sensors/");
+        mRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("changed",dataSnapshot.toString());
+                sensorDataList.clear();
+                for(DataSnapshot oneDataSnapshot:dataSnapshot.getChildren()){
+                    DataSnapshot oneDataSnapshot_data=oneDataSnapshot.child("data");
+                    String value=oneDataSnapshot_data.getValue(String.class);
+                    String values1[]=value.split(",");
+                    int sizeOfValues=values1.length;
+                    String value2=values1[sizeOfValues-1];
+                    String values2[]=value2.split("\"");
+
+                    DataSnapshot oneDataSnapshot_time=oneDataSnapshot.child("time");
+                    Long timeOfReading=oneDataSnapshot_time.getValue(Long.class);
+                    Log.d("haha",sizeOfValues+"");
+                    SensorData sensorData=new SensorData(values1[1],values1[2],values1[3],values1[4],values1[5],values2[0],"1",timeOfReading);
+                    Log.d("data",oneDataSnapshot.toString());
+                    Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
+                    sensorDataList.add(sensorData);
+                }
+                int size=sensorDataList.size();
+                gframe.updateValueOfY(Double.parseDouble(sensorDataList.get(size-1).Curr1));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

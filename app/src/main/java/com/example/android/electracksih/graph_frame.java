@@ -32,7 +32,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class graph_frame extends android.support.v4.app.Fragment {
-
+Double valueUpdatedY;
+    public void updateValueOfY(Double updatedY){
+        valueUpdatedY=updatedY;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
@@ -64,7 +67,7 @@ public class graph_frame extends android.support.v4.app.Fragment {
 
             // Create a numeric Y axis
             final IAxis yAxis = sciChartBuilder.newNumericAxis()
-                    .withAxisTitle("Power").withVisibleRange(0,3).build();
+                    .withAxisTitle("Power").withVisibleRange(-0.05,0.10).build();
 
             // Create a TextAnnotation and specify the inscription and position for it
             TextAnnotation textAnnotation = sciChartBuilder.newTextAnnotation()
@@ -209,7 +212,7 @@ public class graph_frame extends android.support.v4.app.Fragment {
                         // Fill the DoubleValues collections
                         for (int i = 0; i < dataCount; i++)
                         {
-                            lineDoubleData.set(i, Math.sin(i * 0.1 + _phaseShift));
+                            lineDoubleData.set(i, valueUpdatedY);
                             scatterDoubleData.set(i, Math.cos(i * 0.1 + _phaseShift));
                         }
                         // Update DataSeries using bunch update

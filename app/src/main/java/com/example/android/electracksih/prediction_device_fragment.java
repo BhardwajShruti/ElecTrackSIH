@@ -10,13 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class prediction_device_fragment extends Fragment {
+public class prediction_device_fragment extends Fragment implements predicted_task.onSpecificStateChangeListener {
     RecyclerView mRecyclerView;
     RecyclerView mRecyclerView2;
     RecyclerView.Adapter mAdapter;
     RecyclerView.Adapter mAdapter2;
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.LayoutManager mLayoutManager2;
+
+    predicted_task predictedTask=new predicted_task(getContext(),"",this);
     public  prediction_device_fragment(){};
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -37,5 +39,10 @@ public class prediction_device_fragment extends Fragment {
 
 
         return view;
+    }
+
+    @Override
+    public void onStateChanged(String string) {
+
     }
 }

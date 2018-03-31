@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     DataSnapshot oneDataSnapshot_time=oneDataSnapshot.child("time");
                     Long timeOfReading=oneDataSnapshot_time.getValue(Long.class);
                     Log.d("haha",sizeOfValues+"");
-                    SensorData sensorData=new SensorData(values1[0],values1[1],values1[2],values1[3],values1[4],values2[0],"1",timeOfReading);
+                    SensorData sensorData=new SensorData(values1[5],values1[0],values1[1],values1[2],values1[3],values2[4],"1",timeOfReading);
                     Log.d("data",oneDataSnapshot.toString());
                     Toast.makeText(MainActivity.this, "done", Toast.LENGTH_SHORT).show();
                     sensorDataList.add(sensorData);
