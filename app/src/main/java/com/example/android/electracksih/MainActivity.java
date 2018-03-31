@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView.LayoutManager mLayoutManager2;
     ChatBotFragment chatBotFragment;
 
-    Firebase mRef;
+    Firebase mRef,IOTRef;
     ArrayList<SensorData> sensorDataList=new ArrayList<>();
-
+    ArrayList<OneDevice> deviceList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +111,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        IOTRef=new Firebase("https://not-so-awesome-project-45a2e.firebaseio.com/IOTdata/");
+        IOTRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot oneDeviceData:dataSnapshot.getChildren()){
+                    DataSnapshot applianceIDSnapshot=oneDeviceData.child("applianceid");
+
+//                    OneDevice oneDevice=oneDeviceData.getValue(OneDevice.class);
+//                    deviceList.add(oneDevice);
+                    Log.d("device",oneDeviceData.toString());
+                    Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Toast.makeText(MainActivity.this, "failed2", Toast.LENGTH_SHORT).show();
             }
         });
     }
