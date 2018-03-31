@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.example.android.electracksih"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -20,6 +20,7 @@ android {
 }
 
 dependencies {
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.android.support:appcompat-v7:26.1.0'
@@ -39,4 +40,12 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'jp.wasabeef:blurry:2.0.3'
 
+
+
+    // Declare SciChart libraries as module dependencies
+    compile (group: 'com.scichart.library', name: 'core', version: '2.0.0.1654', ext: 'aar')
+    compile (group: 'com.scichart.library', name: 'data', version: '2.0.0.1654', ext: 'aar')
+    compile (group: 'com.scichart.library', name: 'drawing', version: '2.0.0.1654', ext: 'aar')
+    compile (group: 'com.scichart.library', name: 'charting', version: '2.0.0.1654', ext: 'aar')
+    compile (group: 'com.scichart.library', name: 'extensions',version: '2.0.0.1654', ext: 'aar')
 }

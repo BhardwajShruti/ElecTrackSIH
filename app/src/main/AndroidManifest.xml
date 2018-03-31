@@ -32,6 +32,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".prediction_device_fragment" />
         <activity android:name=".history_device" />
+        <activity android:name=".graph_frame"></activity>
     </application>
 
 </manifest>
