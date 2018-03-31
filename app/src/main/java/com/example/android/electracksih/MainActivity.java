@@ -103,14 +103,14 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("haha",sizeOfValues+"");
                     SensorData sensorData=new SensorData(values1[5],values1[0],values1[1],values1[2],values1[3],values2[4],"1",timeOfReading);
                     Log.d("data",oneDataSnapshot.toString());
-                    Toast.makeText(MainActivity.this, "done", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "done", Toast.LENGTH_SHORT).show();
                     sensorDataList.add(sensorData);
                 }
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -124,13 +124,13 @@ public class MainActivity extends AppCompatActivity {
 //                    OneDevice oneDevice=oneDeviceData.getValue(OneDevice.class);
 //                    deviceList.add(oneDevice);
                     Log.d("device",oneDeviceData.toString());
-                    Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                Toast.makeText(MainActivity.this, "failed2", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "failed2", Toast.LENGTH_SHORT).show();
             }
         });
     }

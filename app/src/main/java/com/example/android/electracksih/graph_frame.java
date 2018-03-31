@@ -4,12 +4,17 @@ import android.app.Fragment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.scichart.charting.ClipMode;
 import com.scichart.charting.model.dataSeries.XyDataSeries;
 import com.scichart.charting.modifiers.AxisDragModifierBase;
@@ -27,13 +32,17 @@ import com.scichart.core.model.DoubleValues;
 import com.scichart.drawing.utility.ColorUtil;
 import com.scichart.extensions.builders.SciChartBuilder;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class graph_frame extends android.support.v4.app.Fragment {
 Double valueUpdatedY=0.00;
+    Firebase mRef;
+    public static ArrayList<SensorData> sensorDataList=new ArrayList<>();
     public void updateValueOfY(Double updatedY){
+        Log.d("nsg",updatedY+"");
         valueUpdatedY=updatedY;
     }
     @Override
@@ -62,22 +71,22 @@ Double valueUpdatedY=0.00;
             // Create a numeric X axis
             final IAxis xAxis = sciChartBuilder.newNumericAxis()
                     .withAxisTitle("Time")
-                    .withVisibleRange(0,24)
+                    .withVisibleRange(0,60)
                     .build();
 
             // Create a numeric Y axis
             final IAxis yAxis = sciChartBuilder.newNumericAxis()
-                    .withAxisTitle("Power").withVisibleRange(0,3).build();
+                    .withAxisTitle("Power").withVisibleRange(-0.05,0.10).build();
 
             // Create a TextAnnotation and specify the inscription and position for it
-            TextAnnotation textAnnotation = sciChartBuilder.newTextAnnotation()
-                    .withX1(5.0)
-                    .withY1(55.0)
-                    .withText("")
-                    .withHorizontalAnchorPoint(HorizontalAnchorPoint.Center)
-                    .withVerticalAnchorPoint(VerticalAnchorPoint.Center)
-                    .withFontStyle(20, ColorUtil.Red)
-                    .build();
+//            TextAnnotation textAnnotation = sciChartBuilder.newTextAnnotation()
+//                    .withX1(5.0)
+//                    .withY1(55.0)
+//                    .withText("")
+//                    .withHorizontalAnchorPoint(HorizontalAnchorPoint.Center)
+//                    .withVerticalAnchorPoint(VerticalAnchorPoint.Center)
+//                    .withFontStyle(20, ColorUtil.Red)
+//                    .build();
 
             // Create interactivity modifiers
             ModifierGroup chartModifiers = sciChartBuilder.newModifierGroup()
@@ -92,7 +101,7 @@ Double valueUpdatedY=0.00;
             Collections.addAll(surface.getXAxes(), xAxis);
 
             // Add the annotation to the Annotations collection of the surface
-            Collections.addAll(surface.getAnnotations(), textAnnotation);
+//            Collections.addAll(surface.getAnnotations(), textAnnotation);
 
             // Add the interactions to the ChartModifiers collection of the surface
             Collections.addAll(surface.getChartModifiers(), chartModifiers);
@@ -106,7 +115,7 @@ Double valueUpdatedY=0.00;
         EllipsePointMarker pointMarker = sciChartBuilder
                 .newPointMarker(new EllipsePointMarker())
                 .withFill(ColorUtil.LightBlue)
-                .withStroke(ColorUtil.Green, 2f)
+                .withStroke(ColorUtil.Red, 2f)
                 .withSize(10)
                 .build();
 
@@ -210,7 +219,7 @@ Double valueUpdatedY=0.00;
                     @Override
                     public void run() {
                         // Fill the DoubleValues collections
-                        for (int i = 0; i < dataCount; i++)
+                        for (int i = 0; i <dataCount; i++)
                         {
                             lineDoubleData.set(i, valueUpdatedY);
                             scatterDoubleData.set(i, Math.cos(i * 0.1 + _phaseShift));
@@ -223,12 +232,48 @@ Double valueUpdatedY=0.00;
                 _phaseShift += 0.01;
             }
         };
-
+        loadDataFromFirebase();
         Timer timer = new Timer();
         long delay = 0;
         long interval = 10;
         timer.schedule(updateDataTask, delay, interval);
 
     return  view;
+    }
+    private void loadDataFromFirebase() {
+        mRef = new Firebase("https://not-so-awesome-project-45a2e.firebaseio.com/sensors/");
+        mRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("changed",dataSnapshot.toString());
+                sensorDataList.clear();
+                for(DataSnapshot oneDataSnapshot:dataSnapshot.getChildren()){
+                    DataSnapshot oneDataSnapshot_data=oneDataSnapshot.child("data");
+                    String value=oneDataSnapshot_data.getValue(String.class);
+                    String values1[]=value.split(",");
+                    int sizeOfValues=values1.length;
+                    if(sizeOfValues<6){
+                        continue;
+                    }
+                    String value2=values1[sizeOfValues-1];
+                    String values2[]=value2.split("\"");
+
+                    DataSnapshot oneDataSnapshot_time=oneDataSnapshot.child("time");
+                    Long timeOfReading=oneDataSnapshot_time.getValue(Long.class);
+                    Log.d("haha",sizeOfValues+"");
+                    SensorData sensorData=new SensorData(values1[1],values1[2],values1[3],values1[4],values1[5],values2[0],"1",timeOfReading);
+                    Log.d("data",oneDataSnapshot.toString());
+//                    Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
+                    sensorDataList.add(sensorData);
+                }
+                int size=sensorDataList.size();
+                updateValueOfY(Double.parseDouble(sensorDataList.get(size-2).Curr1));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+//                Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
